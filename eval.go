@@ -105,7 +105,14 @@ func (e *Eval) Iterate() (*Results, bool) {
 		}
 
 		if query.resultQueue.len() > 0 {
-			e.resultQueue.push(query.resultQueue.Pop())
+			for {
+				v := query.resultQueue.Pop()
+				if v != nil {
+					e.resultQueue.push(v)
+				} else {
+					break
+				}
+			}
 		}
 
 		for _, b := range query.buckets.values {
@@ -114,7 +121,14 @@ func (e *Eval) Iterate() (*Results, bool) {
 				dq.state = dq.state(dq, e, t)
 
 				if query.resultQueue.len() > 0 {
-					e.resultQueue.push(query.resultQueue.Pop())
+					for {
+						v := query.resultQueue.Pop()
+						if v != nil {
+							e.resultQueue.push(v)
+						} else {
+							break
+						}
+					}
 				}
 			}
 		}
